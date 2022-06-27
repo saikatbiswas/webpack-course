@@ -1,8 +1,10 @@
-const path = require("path")
+const path = require("path");
+const webpack = require("webpack");
+const HTMLWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
   entry: {
-    main: "./src/main.js"
+    main: ["core-js/fn/promise","./src/main.js"]
   },
   mode: "development",
   output: {
@@ -12,10 +14,22 @@ module.exports = {
   },
   devServer: {
     contentBase: "dist",
-    overlay: true
+    overlay: true,
+    hot: true,
+    stats: {
+      colors: true
+    }
   },
+  devtool: "source-map",
   module: {
     rules: [
+      {
+        test:/\.js$/,
+        use:[
+          {loader:"babel-loader"}
+        ],
+        exclude: /node_modules/
+      },
       {
         test: /\.css$/,
         use: [{ loader: "style-loader" }, { loader: "css-loader" }]
@@ -35,22 +49,16 @@ module.exports = {
         test: /\.html$/,
         use: [
           {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]"
-            }
-          },
-          {
-            loader: "extract-loader",
-            options: {
-              publicPath: "../"
-            }
-          },
-          {
-            loader: "html-loader"
+            loader: "html-loader",
           }
         ]
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(), 
+    new HTMLWebpackPlugin({
+      template: "./src/index.html"
+    })
+  ]
 }
