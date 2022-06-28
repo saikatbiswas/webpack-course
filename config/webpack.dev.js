@@ -68,7 +68,7 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: "./src/index.ejs",
       inject: true,
-      title: "Link's Journal"
+      title: "Webpack Saikat"
     })
   ]
 }
