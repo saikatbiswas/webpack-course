@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
-const HTMLWebpackPlugin = require("html-webpack-plugin")
+const HTMLWebpackPlugin = require("html-webpack-plugin");
+const { VueLoaderPlugin } = require("vue-loader")
 
 module.exports = {
   entry: {
@@ -32,7 +33,29 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [{ loader: "style-loader" }, { loader: "css-loader" }]
+        use: [
+          { loader: "style-loader" }, 
+          { 
+            loader: "css-loader",
+            query:{
+              modules: true, //Import css as module import style from"/style.css" className="style.my-class"
+              localIdentName: "[name]--[local]--[hash:4]"
+
+            }
+          }
+        ]
+      },
+      {
+        test:/\.vue$/,
+        use:[
+          {
+            loader:"vue-loader",
+            options: {
+              reactivityTransform: true
+            }
+          },
+        ],
+        
       },
       {
         test: /\.s[ac]ss$/i,
@@ -89,7 +112,8 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(), 
     new HTMLWebpackPlugin({
       template: "./src/index.html"
-    })
+    }),
+    new VueLoaderPlugin()
   ]
 
   // For EJS
