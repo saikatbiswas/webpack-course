@@ -35,6 +35,36 @@ module.exports = {
         use: [{ loader: "style-loader" }, { loader: "css-loader" }]
       },
       {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "postcss-loader",
+          "sass-loader",
+        ],
+      },
+      {
+        test: /\.less$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          "postcss-loader",
+          "less-loader",
+        ],
+      },
+      {
+        test: /\.styl$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          "postcss-loader",
+          "stylus-loader",
+        ],
+      },
+      {
         test: /\.jpg$/,
         use: [
           {
@@ -61,4 +91,13 @@ module.exports = {
       template: "./src/index.html"
     })
   ]
+
+  // For EJS
+  // plugins: [
+  //   new webpack.HotModuleReplacementPlugin(), 
+  //   new HTMLWebpackPlugin({
+  //     template: "./src/index.ejs",
+  //     title:"Ejs html"
+  //   })
+  // ]
 }
